@@ -85,7 +85,7 @@ io.on("connection", (socket) => {
 
 app.get("/", (req, res) => {
     console.log("Ktoś zażądał strony głównej.");
-    return res.sendFile(path.resolve(__dirname, "../frontend/index.html"));
+    return res.sendFile(path.resolve(__dirname, "../../frontend/index.html"));
 });
 
 server.listen(3000, () => {
