@@ -112,7 +112,7 @@
     </div>
 
 </body>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 
 <script>
     document.getElementById("loading").style.display = "none";
@@ -122,7 +122,7 @@
     document.getElementById("valueCont").style.display = "none";
     document.getElementById("whosTurn").style.display = "none";
 
-    const socket = io('http://localhost:3000', { path: '/socket.io' });
+    const socket = io({ path: '/socket.io' });
 
     let name;
     let myTurn = false;
