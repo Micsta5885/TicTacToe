@@ -5,12 +5,13 @@ const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require('cors');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
-app.use(cors()); 
+app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*",  
+        origin: "*",
         methods: ["GET", "POST"]
     },
     transports: ['polling', 'websocket']
@@ -75,17 +76,23 @@ io.on("connection", (socket) => {
         console.log("Emitowano ruch do wszystkich graczy.");
     });
 
-    socket.on("gameOver",(e)=>{
-        playingArray=playingArray.filter(obj=>obj.p1.p1name!== e.name)
+    socket.on("gameOver", (e) => {
+        playingArray = playingArray.filter(obj => obj.p1.p1name !== e.name)
     })
-
 });
 
-
+// Proxy endpoint to frontend server
+app.use('/frontend', createProxyMiddleware({
+    target: 'http://localhost:8080', // zmień na URL twojego serwera frontendowego
+    changeOrigin: true,
+    pathRewrite: {
+        '^/frontend': '/', // może być potrzebne, aby znormalizować ścieżkę
+    },
+}));
 
 app.get("/", (req, res) => {
     console.log("Ktoś zażądał strony głównej.");
-    return res.sendFile(path.resolve(__dirname, "/app/frontend/index.html"));
+    res.redirect('/frontend'); // Redirect to frontend server
 });
 
 server.listen(3000, () => {
