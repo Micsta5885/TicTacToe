@@ -7,5 +7,6 @@ METADATA_URL="http://169.254.169.254/latest/meta-data"
 IP_V4=$(curl -H "$TOKEN_HEADER" -s $METADATA_URL/public-ipv4)
 
 sed -i "s|http://localhost:3000|http://$IP_V4:3000|g" index.html
+sed -i "s|tic-tac-toe-backend:3000|$IP_V4:3000|g" /etc/nginx/nginx.conf
 
-echo "Updated IP address in index.html to $IP_V4"
+echo "Updated IP address in index.html and nginx.conf to $IP_V4"
